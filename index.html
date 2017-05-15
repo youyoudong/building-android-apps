@@ -36,18 +36,32 @@
 <ul class="sectlevel1">
 <li><a href="#what_you_ll_build">What you&#8217;ll build</a></li>
 <li><a href="#what_you_ll_need">What you&#8217;ll need</a></li>
-<li><a href="#step_1">Step 1</a></li>
-<li><a href="#step_2">Step 2</a></li>
-<li><a href="#step_n">Step N</a></li>
+<li><a href="#create_a_new_android_studio_project">Create a new Android Studio Project</a></li>
+<li><a href="#review_the_list_of_generated_gradle_files">Review the List of Generated Gradle Files</a></li>
+<li><a href="#review_the_top_level_gradle_build_file">Review the Top-Level Gradle build file</a></li>
+<li><a href="#review_the_build_file_in_the_app_module">Review the Build File in the App Module</a></li>
+<li><a href="#run_standard_gradle_tasks">Run standard Gradle tasks</a></li>
+<li><a href="#use_the_gradle_window">Use the Gradle window</a></li>
+<li><a href="#run_a_build_scan">Run a Build Scan</a></li>
 <li><a href="#summary">Summary</a></li>
+<li><a href="#next_steps">Next Steps</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Android applications (known colloquially as <em>apps</em>) use Gradle as their build tool, normally through the only supported IDE, Android Studio. Many resources are available for learning how to build Android applications. This guide, however, focuses on the details of the Gradle build files generated when creating a new Android application, and how to use Gradle to invoke relevant build tasks for them.</p>
+</div>
+</div>
+</div>
 <div class="sect1">
 <h2 id="what_you_ll_build"><a class="anchor" href="#what_you_ll_build"></a>What you&#8217;ll build</h2>
 <div class="sectionbody">
-
+<div class="paragraph">
+<p>You&#8217;ll create a "Hello, World!" type of Android application, explore its generated Gradle build files, and execute common tasks using them.</p>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -59,70 +73,619 @@
 <p>About NN minutes</p>
 </li>
 <li>
-<p>A text editor</p>
-</li>
-<li>
-<p>A command prompt</p>
+<p>Android Studio, version 2.4 or higher. You can download Android Studio, along with the latest Android SDK, from <a href="https://developer.android.com/studio/index.html" class="bare">https://developer.android.com/studio/index.html</a> . The system requirements for the IDE are also found at that link.</p>
 </li>
 <li>
 <p>The Java Development Kit (JDK), version 1.7 or higher</p>
-</li>
-<li>
-<p>A <a href="https://gradle.org/install">Gradle distribution</a>, version 3.5 or better</p>
 </li>
 </ul>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="step_1"><a class="anchor" href="#step_1"></a>Step 1</h2>
+<h2 id="create_a_new_android_studio_project"><a class="anchor" href="#create_a_new_android_studio_project"></a>Create a new Android Studio Project</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The first step is to create a folder for the new project and add a <a href="https://docs.gradle.org/3.5/userguide/gradle_wrapper.html#sec:wrapper_generation">Gradle Wrapper</a> to the project.</p>
+<p>After downloading and installing Android Studio, start the application. On the welcome screen, click the link entitled, "Start a new Android Studio project", as shown in the figure. When ready, click <em>Next</em>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Welcome-to-Android-Studio.png" alt="Welcome to Android Studio">
+</div>
+</div>
+<div class="paragraph">
+<p>On the "Create Android Project" screen, set the application name to "HelloWorldGradle", the company domain to your own (the domain <em>gradle.org</em> is used in the accompanying figure), and select any convenient directory for the project location. Then click <em>Next</em>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Create-New-Project.png" alt="Create New Project">
+</div>
+</div>
+<div class="paragraph">
+<p>On the "Target Android Devices" screen, select <em>Phone and Tablet</em> and choose any recent API level from the <em>Minimum SDK</em> drop-down list. The figure shows API 19, which is common, but the value chose will not affect the rest of this guide.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Target-Android-Devices.png" alt="Target Android Devices">
+</div>
+</div>
+<div class="paragraph">
+<p>On the "Add an Activity" screen, select <em>Empty Activity</em> and click <em>Next</em>.</p>
+</div>
+<div class="paragraph">
+<p>Accept all the defaults on the "Configure Activity" screen and click <em>Finish</em>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Configure-Activity.png" alt="Configure Activity">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="review_the_list_of_generated_gradle_files"><a class="anchor" href="#review_the_list_of_generated_gradle_files"></a>Review the List of Generated Gradle Files</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>By default, Android Studio will start with a "Project View" in "Android" mode, as shown in the figure:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Project-View-Android.png" alt="Project View Android">
+</div>
+</div>
+<div class="paragraph">
+<p>Android projects are Gradle multi-project builds, with a top-level <code>build.gradle</code> file and a subdirectory called <code>app</code>, with its own <code>build.gradle</code> file. The top-level build file is noted as <code>(Project: HelloWorldGradle)</code> in the figure, and the <code>app</code> build file has <code>(Module: app)</code> appended to it.</p>
+</div>
+<div class="paragraph">
+<p>There may be two files called <code>gradle.properties</code>. One is local to the project. The other, optional file of the same name exists only if you have a global <code>gradle.properties</code> file in the <code>.gradle</code> sub-directory of your home directory.</p>
+</div>
+<div class="paragraph">
+<p>The file <code>settings.gradle</code> is used by Gradle to configure the multi-project build. It should consist of a single line:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>$ mkdir building-android-apps
-$ cd building-android-apps
-$ gradle wrapper <i class="conum" data-value="1"></i><b>(1)</b>
-
-:wrapper
-
-BUILD SUCCESSFUL</pre>
+<pre class="CodeRay highlight"><code data-lang="groovy">include <span class="string"><span class="delimiter">'</span><span class="content">:app</span><span class="delimiter">'</span></span></code></pre>
 </div>
 </div>
-<div class="colist arabic">
+<div class="paragraph">
+<p>This tells Gradle that the <code>app</code> sub-directory is also a Gradle project. If, at some later time, you were to add an Android Library to this project through the available wizard, another project sub-directory would be created and added to this file.</p>
+</div>
+<div class="paragraph">
+<p>The last file is called <code>gradle-wrapper.properties</code>, which configures the so-called Gradle Wrapper. This allows you to build Android projects without having to install Gradle first. The contents of the file should be similar to:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">distributionBase=GRADLE_USER_HOME
+distributionPath=wrapper/dists
+zipStoreBase=GRADLE_USER_HOME
+zipStorePath=wrapper/dists
+distributionUrl=https<span class="error">\</span>:<span class="comment">//services.gradle.org/distributions/gradle-3.4.1-all.zip</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The first four lines indicate that when the wrapper runs the first time, it will download a Gradle distribution and store it in the directory <code>.gradle/wrapper/dists</code> in your home directory.</p>
+</div>
+<div class="paragraph">
+<p>The last line shows the value of the <code>distributionUrl</code>, which is the location where Gradle will download the distribution specified.</p>
+</div>
+<div class="admonitionblock note">
 <table>
 <tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>This allows a version of Gradle to be locked to a project and henceforth you can use <code>./gradlew</code> instead of <code>gradle</code>.</td>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The specific version number might differ from that shown here (3.4.1), and the URL might refer to a binary version (<code>-bin</code>) instead of the complete (<code>-all</code>) version shown in this example.
+</td>
 </tr>
 </table>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="step_2"><a class="anchor" href="#step_2"></a>Step 2</h2>
+<h2 id="review_the_top_level_gradle_build_file"><a class="anchor" href="#review_the_top_level_gradle_build_file"></a>Review the Top-Level Gradle build file</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>The project <code>build.gradle</code> file should have contents similar to:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="comment">// Top-level build file where you can add configuration options common to all sub-projects/modules.</span>
 
+buildscript {                 <i class="conum" data-value="1"></i><b>(1)</b>
+    repositories {
+        jcenter()
+    }
+    dependencies {            <i class="conum" data-value="2"></i><b>(2)</b>
+        classpath <span class="string"><span class="delimiter">'</span><span class="content">com.android.tools.build:gradle:2.4.0-alpha7</span><span class="delimiter">'</span></span>
+
+        <span class="comment">// NOTE: Do not place your application dependencies here; they belong</span>
+        <span class="comment">// in the individual module build.gradle files</span>
+    }
+}
+
+allprojects {                 <i class="conum" data-value="3"></i><b>(3)</b>
+    repositories {
+        jcenter()
+    }
+}
+
+task clean(<span class="key">type</span>: Delete) {    <i class="conum" data-value="4"></i><b>(4)</b>
+    delete rootProject.buildDir
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Download plugins block</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Identifies the Android plugin</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Configuration for top-level and module projects</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Ad hoc task</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Gradle defines a domain-specific language (DSL) for builds, used inside the build files. The <code>buildscript</code> tag is part of that DSL. It tells Gradle that the build requires a plugin that may not be part of the baseline Gradle distribution, and tells Gradle where to find it. In this case, the required plugin is specified using coordinate syntax "group:name:version", where the group is <code>com.android.tools.build</code>, the name is <code>gradle</code>, and the version is <code>2.4.0-alpha7</code>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The version number of the Gradle plugin is updated frequently. Please use the latest plugin, as it will contain all the available bug fixes and performance improvements.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>When Gradle builds this project the first time, the plugin will be downloaded and cached, so this task is only performed once.</p>
+</div>
+<div class="paragraph">
+<p>The <code>allprojects</code> tag holds configuration details that apply to both the top-level project and any sub-projects it contains. In this case, the block specifies that any required dependencies should be downloaded from <code>jcenter</code>, the public Bintray Artifactory repository at <a href="https://jcenter.bintray.com" class="bare">https://jcenter.bintray.com</a> .</p>
+</div>
+<div class="paragraph">
+<p>Finally, the build file contains a custom (or <em>ad hoc</em>) task, called <code>clean</code>. It uses the built-in task type <code>Delete</code> and configures it so that the <code>clean</code> task will delete the <code>buildDir</code> in the <code>rootProject</code>. Both are project properties, whose values default to the <code>build</code> directory in the project where this app resides.</p>
+</div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="step_n"><a class="anchor" href="#step_n"></a>Step N</h2>
+<h2 id="review_the_build_file_in_the_app_module"><a class="anchor" href="#review_the_build_file_in_the_app_module"></a>Review the Build File in the App Module</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>Open the <code>build.gradle</code> file in the <code>app</code> module. The first line is:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">apply <span class="key">plugin</span>: <span class="string"><span class="delimiter">'</span><span class="content">com.android.application</span><span class="delimiter">'</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This "applies" the Android plugin (referred to in the <code>buildscript</code> section of the top-level build file) to the current project. Plugins in Gradle can add custom tasks, new configurations, dependencies, and other capabilities to Gradle projects. In this case, applying the Android plugin adds a wide variety of tasks, which are configured by the <code>android</code> block shown next.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">android {
+    compileSdkVersion <span class="integer">25</span>
+    buildToolsVersion <span class="string"><span class="delimiter">&quot;</span><span class="content">25.0.2</span><span class="delimiter">&quot;</span></span>
+    defaultConfig {
+        applicationId <span class="string"><span class="delimiter">&quot;</span><span class="content">org.gradle.helloworldgradle</span><span class="delimiter">&quot;</span></span>
+        minSdkVersion <span class="integer">19</span>
+        targetSdkVersion <span class="integer">25</span>
+        versionCode <span class="integer">1</span>
+        versionName <span class="string"><span class="delimiter">&quot;</span><span class="content">1.0</span><span class="delimiter">&quot;</span></span>
+        testInstrumentationRunner
+            <span class="string"><span class="delimiter">&quot;</span><span class="content">android.support.test.runner.AndroidJUnitRunner</span><span class="delimiter">&quot;</span></span>
+    }
+    buildTypes {
+        release {
+            minifyEnabled <span class="predefined-constant">false</span>
+            proguardFiles getDefaultProguardFile(<span class="string"><span class="delimiter">'</span><span class="content">proguard-android.txt</span><span class="delimiter">'</span></span>),
+                <span class="string"><span class="delimiter">'</span><span class="content">proguard-rules.pro</span><span class="delimiter">'</span></span>
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>These properties are more relevant to Android than the Gradle build system, to they will only be lightly reviewed here. In short:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The <code>compileSdkVersion</code> and <code>buildToolsVersion</code> are associated with the Android SDK and should always be the latest available version of each</p>
+</li>
+<li>
+<p>The <code>defaultConfig</code> section hold properties that are shared by all variants (combinations of build types and variants) of the app.</p>
+</li>
+<li>
+<p>The <code>applicationId</code> is based on the domain name and project name specified when creating the app, and must be unique in the Google Play store.</p>
+</li>
+<li>
+<p>The value of <code>minSdkVersion</code> is the minimum Android API you are willing to support with this app, and the <code>targetSdkVersion</code> should be the latest Android version available.</p>
+</li>
+<li>
+<p>The value of <code>versionCode</code> should be an integer that is incremented before uploading a new version of the app into the Google Play store. This value, along with the <code>applicationId</code>, tell Google that this is a new version of an existing app, as opposed to a new app.</p>
+</li>
+<li>
+<p>The <code>versionName</code> value is used for your own internal version tracking.</p>
+</li>
+<li>
+<p>The <code>testInstrumentationRunner</code> property is configured to use the JUnit 4 test runner configured for Android apps.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Below this section is a block called <code>buildTypes</code>. By default, Android apps support two build types, <code>debug</code> and <code>release</code>. This section allows you to configure each however you like. The <code>debug</code> section is not shown here, implying that all the default settings for <code>debug</code> are being used.</p>
+</div>
+<div class="paragraph">
+<p>After the <code>android</code> block, there is a block that shows the libraries used for this app.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">dependencies {
+    compile fileTree(<span class="key">dir</span>: <span class="string"><span class="delimiter">'</span><span class="content">libs</span><span class="delimiter">'</span></span>, <span class="key">include</span>: [<span class="string"><span class="delimiter">'</span><span class="content">*.jar</span><span class="delimiter">'</span></span>])
+    androidTestCompile(<span class="string"><span class="delimiter">'</span><span class="content">com.android.support.test.espresso:espresso-core:2.2.2</span><span class="delimiter">'</span></span>, {
+        exclude <span class="key">group</span>: <span class="string"><span class="delimiter">'</span><span class="content">com.android.support</span><span class="delimiter">'</span></span>, <span class="key">module</span>: <span class="string"><span class="delimiter">'</span><span class="content">support-annotations</span><span class="delimiter">'</span></span>
+    })
+    compile <span class="string"><span class="delimiter">'</span><span class="content">com.android.support:appcompat-v7:25.3.1</span><span class="delimiter">'</span></span>
+    testCompile <span class="string"><span class="delimiter">'</span><span class="content">junit:junit:4.12</span><span class="delimiter">'</span></span>
+    compile <span class="string"><span class="delimiter">'</span><span class="content">com.android.support.constraint:constraint-layout:1.0.2</span><span class="delimiter">'</span></span>
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Configuring dependencies is a fundamental part of building Gradle applications. In this case, the <code>dependencies</code> section shows values for the <code>compile</code>, <code>testCompile</code>, and <code>androidTestCompile</code> configurations.</p>
+</div>
+<div class="paragraph">
+<p>Taking the simplest one first, the <code>testCompile</code> dependency consists only of the latest stable JUnit 4 distribution. The JUnit classes and test annotations will then be available at compile time in the <code>src/test/java</code> hierarchy.</p>
+</div>
+<div class="paragraph">
+<p>The <code>androidTestCompile</code> dependency refers to the Espresso testing library, which is used for integration testing of Android apps. In this case, Espresso is requested without the <code>support-annotations</code> library that it would normally include, because a different version is already included through other dependencies. In a later step, you&#8217;ll see how to find out what version of this library was included and why.</p>
+</div>
+<div class="paragraph">
+<p>Finally, there are three lines that add dependencies to the <code>compile</code> configuration:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The first, <code>fileTree(dir: 'libs', include: ['*.jar'])</code>, is a <code>fileTree</code> dependency that adds any jar files in the <code>libs</code> folder to the compile classpath</p>
+</li>
+<li>
+<p>The second, <code>com.android.support:appcompat-v7:25.3.1</code> adds the Android Compatibility library to the project. This allows you to use the Material design theme and other capabilities in any Android app as old as SDK version 7</p>
+</li>
+<li>
+<p>The final line, <code>com.android.support.constraint:constraint-layout:1.0.2</code>, adds the new Constraint Layout to the project. Combined with the Compatibility library, this lets you create an app with the most recent layout features</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="run_standard_gradle_tasks"><a class="anchor" href="#run_standard_gradle_tasks"></a>Run standard Gradle tasks</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Android Studio makes it easy to build and deploy a debug version of an app through the IDE, but ultimately Gradle is still involved. To see this, open the Terminal window in Android Studio (or open an external command prompt and navigate to the root directory of your app). From there you can run the <code>build</code> task.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ ./gradlew build</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This will run many tasks and eventually return "Build Successful". To see the resulting APK (Android package, the deployable version of an Android app), look in the directory <code>app/build/outputs/apk</code>. There you will find two files:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>app-debug.apk</code></p>
+</li>
+<li>
+<p><code>app-release-unsigned.apk</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The debug APK is the version that will be deployed to an emulator or connected device. If you want to deploy a release APK, you need to create a signing configuration first, which is beyond the scope of this guide, but is a straightforward process described in the resources.</p>
+</div>
+<div class="paragraph">
+<p>From the terminal, you can also find out the version of the version of the <code>support-annotations</code> module being used in the project. To do so, first run the <code>dependencies</code> task in the <code>app</code> project, asking for the details of the <code>compile</code> configuration only.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ ./gradlew :app:dependencies --configuration compile
+:app:dependencies
 
+------------------------------------------------------------
+Project :app
+------------------------------------------------------------
+
+compile - Classpath for compiling the main sources.
++--- com.android.support:appcompat-v7:25.3.1
+|    +--- com.android.support:support-annotations:25.3.1
+|    +--- com.android.support:support-v4:25.3.1
+|    |    +--- com.android.support:support-compat:25.3.1
+|    |    |    \--- com.android.support:support-annotations:25.3.1
+|    |    +--- com.android.support:support-media-compat:25.3.1
+|    |    |    +--- com.android.support:support-annotations:25.3.1
+|    |    |    \--- com.android.support:support-compat:25.3.1 (*)
+|    |    +--- com.android.support:support-core-utils:25.3.1
+|    |    |    +--- com.android.support:support-annotations:25.3.1
+|    |    |    \--- com.android.support:support-compat:25.3.1 (*)
+|    |    +--- com.android.support:support-core-ui:25.3.1
+|    |    |    +--- com.android.support:support-annotations:25.3.1
+|    |    |    \--- com.android.support:support-compat:25.3.1 (*)
+|    |    \--- com.android.support:support-fragment:25.3.1
+|    |         +--- com.android.support:support-compat:25.3.1 (*)
+|    |         +--- com.android.support:support-media-compat:25.3.1 (*)
+|    |         +--- com.android.support:support-core-ui:25.3.1 (*)
+|    |         \--- com.android.support:support-core-utils:25.3.1 (*)
+|    +--- com.android.support:support-vector-drawable:25.3.1
+|    |    +--- com.android.support:support-annotations:25.3.1
+|    |    \--- com.android.support:support-compat:25.3.1 (*)
+|    \--- com.android.support:animated-vector-drawable:25.3.1
+|         \--- com.android.support:support-vector-drawable:25.3.1 (*)
+\--- com.android.support.constraint:constraint-layout:1.0.2
+     \--- com.android.support.constraint:constraint-layout-solver:1.0.2
+
+(*) - dependencies omitted (listed previously)
+
+BUILD SUCCESSFUL</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>From the output, you can see that the <code>support-annotations</code> module, version 25.3.1, is a dependency of the <code>appcompat-v7</code> library.</p>
+</div>
+<div class="paragraph">
+<p>Another way to see the version required is to use the <code>dependencyInsight</code> task. Run the following command (all on one line).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ ./gradlew :app:dependencyInsight --dependency support-annotations \
+ --configuration compile
+:app:dependencyInsight
+com.android.support:support-annotations:25.3.1
++--- com.android.support:appcompat-v7:25.3.1
+|    \--- compile
++--- com.android.support:support-compat:25.3.1
+|    +--- com.android.support:support-v4:25.3.1
+|    |    \--- com.android.support:appcompat-v7:25.3.1 (*)
+|    +--- com.android.support:support-vector-drawable:25.3.1
+|    |    +--- com.android.support:appcompat-v7:25.3.1 (*)
+|    |    \--- com.android.support:animated-vector-drawable:25.3.1
+|    |         \--- com.android.support:appcompat-v7:25.3.1 (*)
+|    +--- com.android.support:support-media-compat:25.3.1
+|    |    +--- com.android.support:support-v4:25.3.1 (*)
+|    |    \--- com.android.support:support-fragment:25.3.1
+|    |         \--- com.android.support:support-v4:25.3.1 (*)
+|    +--- com.android.support:support-core-utils:25.3.1
+|    |    +--- com.android.support:support-v4:25.3.1 (*)
+|    |    \--- com.android.support:support-fragment:25.3.1 (*)
+|    +--- com.android.support:support-core-ui:25.3.1
+|    |    +--- com.android.support:support-v4:25.3.1 (*)
+|    |    \--- com.android.support:support-fragment:25.3.1 (*)
+|    \--- com.android.support:support-fragment:25.3.1 (*)
++--- com.android.support:support-core-ui:25.3.1 (*)
++--- com.android.support:support-core-utils:25.3.1 (*)
++--- com.android.support:support-media-compat:25.3.1 (*)
+\--- com.android.support:support-vector-drawable:25.3.1 (*)
+
+(*) - dependencies omitted (listed previously)
+
+BUILD SUCCESSFUL</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Both the <code>dependency</code> and <code>dependencyInsight</code> tasks are available in any Gradle project. They can help you track down and resolve any issues with library version conflicts. For more details, see &#8230;&#8203;</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="use_the_gradle_window"><a class="anchor" href="#use_the_gradle_window"></a>Use the Gradle window</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Android Studio includes a special window for executing Gradle tasks. Android projects provide over 80 different tasks, and this window tries to organize them into categories.</p>
+</div>
+<div class="paragraph">
+<p>Open the Tasks folder under <code>:app</code>, and look inside the <code>android</code> category. The following figure shows an example.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Gradle-window-signingReport.png" alt="Gradle window signingReport">
+</div>
+</div>
+<div class="paragraph">
+<p>Since the <code>signingReport</code> task does not require any arguments, you can simply double-click on it to execute it. The results are shown in the next figure.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Run-and-Gradle-Console.png" alt="Run and Gradle Console">
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>signingReport</code> task tells you where the public key is stored (here the <code>debug.keystore</code> file in the user&#8217;s root directory), its alias, and its MD5 and SHA1 hashes.</p>
+</div>
+<div class="paragraph">
+<p>Note that there is no release key at the moment. Look at the tasks listed in the Gradle window in the <code>install</code> category, as shown the next figure.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Gradle-window-install.png" alt="Gradle window install">
+</div>
+</div>
+<div class="paragraph">
+<p>You&#8217;ll see that there is an <code>installDebug</code> task and an <code>uninstallDebug</code> task, an <code>uninstallRelease</code> task, and even an <code>uninstallAllTask</code>. Conspicuous by its absence, however, is an <code>installRelease</code> task. That task is only available if you create a signing configuration for a release key, which Gradle can use to create a signed release APK.</p>
+</div>
+<div class="paragraph">
+<p>If you were now to start up multiple emulators or attach multiple devices, you could deploy the app into all of them by executing the <code>installDebug</code> task.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ ./gradlew installDebug</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This is different from running the app through the IDE. In that case, you would select a single connected device or emulator, and would both install the app and start it up. The <code>installDebug</code> task from Gradle will deploy the app in all connected devices in one step, though it will not start the app in any of them. The result will be similar to the next figure.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Android-Emulator-Pixel_API_25.png" alt="Android Emulator Pixel API 25">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Android-Emulator-Nexus_9_API_23.png" alt="Android Emulator Nexus 9 API 23">
+</div>
+</div>
+<div class="paragraph">
+<p>You can launch the app by double-clicking on the icon, as usual. You can also remove the app by using the <code>uninstallAll</code> task.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ ./gradlew uninstallAll</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This will remove the app from all connected devices.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="run_a_build_scan"><a class="anchor" href="#run_a_build_scan"></a>Run a Build Scan</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Build scans generate a complete report of all the dependencies, plugins, test outputs, and performance of your build. You can request a build scan by appending the <code>--scan</code> flag on any Gradle command using version 3.4 and up, or using the <code>-Dscan</code> flag on earlier versions of Gradle.</p>
+</div>
+<div class="paragraph">
+<p>In order to use build scans, you need to add the build scan plugin and agree to the license. See the Build Scan Getting Started guide at &#8230;&#8203; for details, but to summarize, add the following sections to the top-level <code>build.gradle</code> file:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">buildscript {
+    repositories {
+        jcenter()
+        maven { url <span class="string"><span class="delimiter">'</span><span class="content">https://plugins.gradle.org/m2</span><span class="delimiter">'</span></span> }    <i class="conum" data-value="1"></i><b>(1)</b>
+    }
+    dependencies {
+        classpath <span class="string"><span class="delimiter">'</span><span class="content">com.android.tools.build:gradle:2.4.0-alpha7</span><span class="delimiter">'</span></span>
+        classpath <span class="string"><span class="delimiter">'</span><span class="content">com.gradle:build-scan-plugin:1.7.1</span><span class="delimiter">'</span></span>   <i class="conum" data-value="1"></i><b>(1)</b>
+    }
+}
+
+apply <span class="key">plugin</span>: com.gradle.build-scan                      <i class="conum" data-value="1"></i><b>(1)</b>
+
+buildScan {                                              <i class="conum" data-value="1"></i><b>(1)</b>
+    licenseAgreementUrl = <span class="string"><span class="delimiter">'</span><span class="content">https://gradle.com/terms-of-service</span><span class="delimiter">'</span></span>
+    licenseAgree = <span class="string"><span class="delimiter">'</span><span class="content">yes</span><span class="delimiter">'</span></span>
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Added sections</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Now when you run:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ ./gradlew build --scan</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>you will receive a link to the results, hosted at Gradle. The resulting page will resemble:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Build-scan-for-HelloWorldGradle.png" alt="Build scan for HelloWorldGradle">
+</div>
+</div>
+<div class="paragraph">
+<p>Feel free to explore all the details. The report contains information on many features, including dependencies. If you dig into the dependencies section and open the <code>_debugCompile</code> configuration, inside the <code>appcompat-v7</code> library is the <code>support-annotations</code> library described earlier.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Build-scan-dep-support-annotations.png" alt="Build scan dep support annotations">
+</div>
+</div>
+<div class="paragraph">
+<p>Build scans are a powerful way to analyze your build. For more details, see <a href="https://guides.gradle.org/creating-build-scans/">the Getting Started guide for Creating Build Scans</a> and <a href="https://docs.gradle.com/build-scan-plugin/">the Build Scan Plugin User Manual</a>.</p>
+</div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="summary"><a class="anchor" href="#summary"></a>Summary</h2>
 <div class="sectionbody">
-
+<div class="paragraph">
+<p>In this guide, you created an Android app and examined many of the Gradle capabilities that came with it. Specifically, you learned how to:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Create an Android app using Android Studio</p>
+</li>
+<li>
+<p>View the generated project as a Gradle multi-project build</p>
+</li>
+<li>
+<p>Add the Android plugin to the top-level Gradle build file</p>
+</li>
+<li>
+<p>See which version of Gradle is used in the generated wrapper</p>
+</li>
+<li>
+<p>Interpret the settings added in the <code>android</code> section of the app</p>
+</li>
+<li>
+<p>Work with the default dependencies added to the app</p>
+</li>
+<li>
+<p>Build the app and see the output APK</p>
+</li>
+<li>
+<p>Determine which version of a dependency is being used</p>
+</li>
+<li>
+<p>Use the Gradle window to execute tasks</p>
+</li>
+<li>
+<p>Deploy and uninstall the app on multiple devices</p>
+</li>
+<li>
+<p>Run a build scan on an Android project</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="next_steps"><a class="anchor" href="#next_steps"></a>Next Steps</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The book <em>Gradle Recipes for Android</em>, by Ken Kousen and published by O&#8217;Reilly Media, Inc, is available for purchase at <a href="http://shop.oreilly.com/product/0636920032656.do" class="bare">http://shop.oreilly.com/product/0636920032656.do</a>, but an electronic version can also be downloaded for free at <a href="https://gradle.org/books/" class="bare">https://gradle.org/books/</a> .</p>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-05-11 13:51:21 UTC
+Last updated 2017-05-15 04:15:29 UTC
 </div>
 </div>
 </body>
