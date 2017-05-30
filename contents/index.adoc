@@ -8,7 +8,7 @@ You'll create a "Hello, World!" type of Android application, explore its generat
 
 == What you'll need
 
-* About NN minutes
+* About +++<span class="time-to-complete-text"></span>+++
 * Android Studio, version 2.4 or higher. You can download Android Studio, along with the latest Android SDK, from https://developer.android.com/studio/index.html . The system requirements for the IDE are also found at that link.
 * The Java Development Kit (JDK), version 1.7 or higher
 
