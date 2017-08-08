@@ -352,7 +352,7 @@ buildscript {
     }
 }
 
-apply plugin: com.gradle.build-scan                      // <1>
+apply plugin: 'com.gradle.build-scan'                    // <1>
 
 buildScan {                                              // <1>
     licenseAgreementUrl = 'https://gradle.com/terms-of-service'
