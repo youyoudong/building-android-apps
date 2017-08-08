@@ -1,4 +1,4 @@
-= Building Android apps
+= Building Android Apps
 
 Android applications (known colloquially as _apps_) use Gradle as their build tool, normally through the only supported IDE, Android Studio. Many resources are available for learning how to build Android applications. This guide, however, focuses on the details of the Gradle build files generated when creating a new Android application, and how to use Gradle to invoke relevant build tasks for them.
 
