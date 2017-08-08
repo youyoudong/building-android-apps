@@ -205,7 +205,7 @@ This will run many tasks and eventually return "Build Successful". To see the re
 
 The debug APK is the version that will be deployed to an emulator or connected device. If you want to deploy a release APK, you need to create a signing configuration first, which is beyond the scope of this guide, but is a straightforward process described in the resources.
 
-From the terminal, you can also find out the version of the version of the `support-annotations` module being used in the project. To do so, first run the `dependencies` task in the `app` project, asking for the details of the `compile` configuration only.
+From the terminal, you can also find out the version of the `support-annotations` module being used in the project. To do so, first run the `dependencies` task in the `app` project, asking for the details of the `compile` configuration only.
 
 [listing]
 ----
