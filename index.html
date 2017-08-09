@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.3">
 <meta name="author" content="Ken Kousen">
-<title>Building Android apps</title>
+<title>Building Android Apps</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="./coderay-asciidoctor.css">
 <link rel="stylesheet" href="https://guides.gradle.org/css/asciidoctor.css">
@@ -33,7 +33,7 @@
 </script>
 </head>
 <body class="article toc2 toc-right">
-<div id="header"><div style="padding-top: 10px;"><a href="https://guides.gradle.org"><img src="https://guides.gradle.org/gradle-guides.svg" alt=""></a></div><h1>Building Android apps</h1>
+<div id="header"><div style="padding-top: 10px;"><a href="https://guides.gradle.org"><img src="https://guides.gradle.org/gradle-guides.svg" alt=""></a></div><h1>Building Android Apps</h1>
 <div class="details">
 <span id="author" class="author">Ken Kousen</span><br>
 </div>
@@ -408,7 +408,7 @@ The version number of the Gradle plugin is updated frequently. Please use the la
 <p>The debug APK is the version that will be deployed to an emulator or connected device. If you want to deploy a release APK, you need to create a signing configuration first, which is beyond the scope of this guide, but is a straightforward process described in the resources.</p>
 </div>
 <div class="paragraph">
-<p>From the terminal, you can also find out the version of the version of the <code>support-annotations</code> module being used in the project. To do so, first run the <code>dependencies</code> task in the <code>app</code> project, asking for the details of the <code>compile</code> configuration only.</p>
+<p>From the terminal, you can also find out the version of the <code>support-annotations</code> module being used in the project. To do so, first run the <code>dependencies</code> task in the <code>app</code> project, asking for the details of the <code>compile</code> configuration only.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -591,7 +591,7 @@ BUILD SUCCESSFUL</pre>
     }
 }
 
-apply <span class="key">plugin</span>: com.gradle.build-scan                      <i class="conum" data-value="1"></i><b>(1)</b>
+apply <span class="key">plugin</span>: <span class="string"><span class="delimiter">'</span><span class="content">com.gradle.build-scan</span><span class="delimiter">'</span></span>                    <i class="conum" data-value="1"></i><b>(1)</b>
 
 buildScan {                                              <i class="conum" data-value="1"></i><b>(1)</b>
     licenseAgreementUrl = <span class="string"><span class="delimiter">'</span><span class="content">https://gradle.com/terms-of-service</span><span class="delimiter">'</span></span>
@@ -700,7 +700,7 @@ buildScan {                                              <i class="conum" data-v
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-07-19 10:52:31 UTC
+Last updated 2017-08-09 19:56:50 UTC
 </div>
 </div>
 </body>
