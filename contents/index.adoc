@@ -335,11 +335,18 @@ This will remove the app from all connected devices.
 
 == Run a Build Scan
 
-Build scans generate a complete report of all the dependencies, plugins, test outputs, and performance of your build. You can request a build scan by appending the `--scan` flag on any Gradle command using version 3.4 and up, or using the `-Dscan` flag on earlier versions of Gradle.
+Build scans generate a complete report of all the dependencies, plugins, test outputs, and performance of your build.
+You can easily enable build scans in your build by following these steps:
 
-In order to use build scans, you need to add the build scan plugin and agree to the license. See the Build Scan Getting Started guide at ... for details, but to summarize, add the following sections to the top-level `build.gradle` file:
+1. If you're using Gradle 4.3+, run your builds with the `--scan` command line option, e.g. `gradle build --scan`
+1. If you're using Gradle < 4.3, manually apply the https://docs.gradle.com/scans[build scan plugin], then run your builds with the `--scan` command line option
+
+By doing one of the above options, you are going to publish a build scan of the Gradle build that was just executed to https://scans.gradle.com.
+This requires accepting a license agreement, and will be asked during the build (Gradle 4.3+) or can be accepted upfront (any Gradle version).
+See the https://docs.gradle.com/build-scan-plugin/[Build Scan Plugin User Manual] for more explanations or configuration possibilities.
 
 [source,groovy]
+.Example Gradle build, when manually applying the build scan plugin
 ----
 buildscript {
     repositories {
@@ -348,7 +355,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.4.0-alpha7'
-        classpath 'com.gradle:build-scan-plugin:1.7.1'   // <1>
+        classpath 'com.gradle:build-scan-plugin:1.10.3'  // <1>
     }
 }
 
@@ -361,13 +368,22 @@ buildScan {                                              // <1>
 ----
 <1> Added sections
 
-Now when you run:
-
+When you run `./gradlew build --scan`, you will receive a link to the results, hosted at Gradle.
 ----
-$ ./gradlew build --scan
+./gradlew build --scan
+
+BUILD SUCCESSFUL in 1s
+4 actionable tasks: 4 executed
+
+Do you accept the Gradle Cloud Services license agreement (https://gradle.com/terms-of-service)? [yes, no]
+yes
+Gradle Cloud Services license agreement accepted.
+
+Publishing build scan...
+https://gradle.com/s/carzirlfjwjlo
 ----
 
-you will receive a link to the results, hosted at Gradle. The resulting page will resemble:
+The resulting page will resemble:
 
 image::Build-scan-for-HelloWorldGradle.png[]
 
