@@ -343,7 +343,7 @@ You can easily enable build scans in your build by following these steps:
 
 By doing one of the above options, you are going to publish a build scan of the Gradle build that was just executed to https://scans.gradle.com.
 This requires accepting a license agreement, and will be asked during the build (Gradle 4.3+) or can be accepted upfront (any Gradle version).
-See the https://docs.gradle.com/build-scan-plugin/[Build Scan Plugin User Manual] for more explanations or configuration possibilities.
+See the https://docs.gradle.com/build-scan-plugin/[Build Scan Plugin User Manual] for more details.
 
 [source,groovy]
 .Example Gradle build, when manually applying the build scan plugin
